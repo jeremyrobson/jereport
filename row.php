@@ -7,7 +7,7 @@
     <td>
         <?=$group?>
         <?php if (count($node["children"])): ?>
-            <a href="javascript:void(0);">+</a>
+            <a class="toggle-button" href="javascript:void(0);">+</a>
         <?php endif; ?>
     </td>
 

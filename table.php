@@ -1,4 +1,4 @@
-<table>
+<table id="jr-table">
 
 <thead>
 
