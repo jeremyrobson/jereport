@@ -11,15 +11,23 @@ $report = new Report(["month", "farm", "block", "chemical", "crop"], ["amount", 
 
 <head>
 
+<link href="jereport.css" rel="stylesheet" />
 <style>
 
 table {
+    table-layout: fixed;
     width: 100%;
     border: 1px solid #AAAAAA;
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: 700;
+    background-color: #ddd;
 }
 
 td, th {
-    border: 1px solid #AAAAAA;
+    border: 1px solid #ccc;
     padding: 0.25em;
 }
 
@@ -37,7 +45,7 @@ td a {
 
 <body>
 
-<?php $report->render2(); ?>
+<?php $report->render(); ?>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script src="jereport.js"></script>

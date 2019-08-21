@@ -2,7 +2,7 @@ var icon_open = '+';
 var icon_close = '-';
 
 function reset_table() {
-    $(".toggle-button").off();
+    $(".jr-toggle").off();
 
     /*
     var table = $("#jr-table");
@@ -25,33 +25,34 @@ function reset_table() {
 }
 
 function reload_data() {
-    $(".node").each(function() {
+    $(".jr-row").each(function() {
         var self = $(this);
         var row_id = self.data("row-id");
-        var children = $(`.node[data-parent-id='${row_id}']`);
-        self.find(".toggle-button")
-        .html(icon_close);
-        
-        button.click(function() {
-            if (self.hasClass("expanded")) {
-                children.trigger("node:hide");
-                self.removeClass("expanded");
-                button.html(icon_open);
+        var children = $(`.jr-row[data-parent-id='${row_id}']`);
+        self.find(".jr-toggle")
+        .html(icon_close)
+        .click(function() {
+            if (self.hasClass("jr-expanded")) {
+                children.trigger("jr-row:hide");
+                self.removeClass("jr-expanded");
+                $(this).html(icon_open);
             }
             else {
-                children.trigger("node:show");
-                self.addClass("expanded");
-                button.html(icon_close);
+                children.trigger("jr-row:show");
+                self.addClass("jr-expanded");
+                $(this).html(icon_close);
             }
         });
-        self.on("node:hide",{},function() {
-            self.addClass("hide");
-            children.trigger("node:hide"); //hide all the children
+
+        self.on("jr-row:hide",{},function() {
+            self.addClass("jr-hide");
+            children.trigger("jr-row:hide"); //hide all the children
         });
-        self.on("node:show",{},function() {
-            self.removeClass("hide");
-            if (self.hasClass("expanded")) { //only show children if expanded
-                children.trigger("node:show");
+
+        self.on("jr-row:show",{},function() {
+            self.removeClass("jr-hide");
+            if (self.hasClass("jr-expanded")) { //only show children if expanded
+                children.trigger("jr-row:show");
             }
         });
     });

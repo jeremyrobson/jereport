@@ -21,18 +21,21 @@ class Report {
         foreach ($this->items as $item) {
             $this->insert_node($this->root_node, $item, 0);
         }
+
+        self::sort($this->root_node);
     }
 
-    function render() {
-        include_once("table.php");
-    }
+    function insert_node(&$node, $item, $order_index) {
+        $group = $this->order[$order_index];
+        $text = $item->$group;
 
-    function insert_node(&$node, $item, $index) {
-        $group = $this->order[$index];
-        $key = $item->$group;
+        //reverse lookup key map to find sort index
+        $arr = KEY_MAP[$group];
+        $sort_index = array_search($text, $arr);
 
-        if (empty($node[$key])) {
-            $node[$key] = array(
+        if (empty($node[$sort_index])) {
+            $node[$sort_index] = array(
+                "text" => $text,
                 "children" => array(),
                 "values" => array(
                     "amount" => 0,
@@ -42,36 +45,55 @@ class Report {
         }
 
         //if not yet reached end of order, recurse, else put the summed values
-        if ($index < count($this->order) - 1) {
-            $values = $this->insert_node($node[$key]["children"], $item, $index + 1);
+        if ($order_index < count($this->order) - 1) {
+            $values = $this->insert_node($node[$sort_index]["children"], $item, $order_index + 1);
         }
         else {
             $values["amount"] = $item->amount;
             $values["total"] = $item->total;
         }
 
-        $node[$key]["values"]["amount"] += $values["amount"];
-        $node[$key]["values"]["total"] += $values["total"];
+        $node[$sort_index]["values"]["amount"] += $values["amount"];
+        $node[$sort_index]["values"]["total"] += $values["total"];
 
         return $values;
     }
 
-    function draw_row($group, $node, $level, $parent_id = null) {
-        $id = uniqid();
+    static function sort(&$array) {
+        foreach ($array as &$value) {
+            $children = &$value["children"];
+            if (is_array($children) && sizeof($children)) {
+               self::sort($children);
+            }
+        }
+        return ksort($array);
+     }
 
+    static function zsort(&$node) {
+        foreach ($node as $k => $subnode) {
+            if (sizeof($subnode["children"])) {
+                self::sort($subnode["children"]);
+            }
+        }
+
+        uksort($node, function($a, $b) use (&$node) {
+            return $node[$a] - $node[$b] ?: $a - $b;
+        });
+    }
+
+    function draw_row($key, $node, $level, $parent_id = null) {
+        $id = uniqid();
+        $text = $node["text"];
+        
         include("row.php");
         
-        foreach ($node["children"] as $group => $node) {
-            $this->draw_row($group, $node, $level + 1, $id);
+        foreach ($node["children"] as $key => $node) {
+            $this->draw_row($key, $node, $level + 1, $id);
         }
     }
 
-    function render2() {
-        echo "<table><tbody>";
-        foreach ($this->root_node as $group => $node) {
-            $this->draw_row($group, $node, 0);
-        }
-        echo "</tbody></table>";
+    function render() {
+        include("table.php");
     }
 
 }

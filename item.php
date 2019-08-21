@@ -1,10 +1,10 @@
 <?php
 
 const MONTHS = array(
-    "jan" => "January",
-    "feb" => "February",
-    "mar" => "March",
-    "apr" => "April"
+    "January",
+    "February",
+    "March",
+    "April"
 );
 
 const CHEMICALS = array(
@@ -15,17 +15,17 @@ const CHEMICALS = array(
 );
 
 const FARMS = array(
-    "a" => "Farm A",
-    "b" => "Farm B",
     "c" => "Farm C",
+    "b" => "Farm B",
+    "a" => "Farm A",
     "d" => "Farm D"
 );
 
 const BLOCKS = array(
-    "Block 1",
+    "Block 4",
     "Block 2",
     "Block 3",
-    "Block 4"
+    "Block 1"
 );
 
 const CROPS = array(

@@ -1,39 +1,20 @@
-<table id="jr-table">
+<table>
+    <thead>
+        <?php foreach ($this->order as $group): ?>
+            <th><?=$group?></th>
+        <?php endforeach; ?>
+        <?php foreach ($this->sums as $sum): ?>
+            <th><?=$sum?></th>
+        <?php endforeach; ?>
 
-<thead>
+    </thead>
+    <tbody>
 
-<tr>
+    <?php
+        foreach ($this->root_node as $key => $node) {
+            $this->draw_row($key, $node, 0);
+        }
+    ?>
 
-<?php foreach ($this->order as $key): ?>
-
-    <th>
-        <?=$key?>
-    </th>
-
-<?php endforeach; ?>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<?php foreach ($this->items as $item): ?>
-
-<tr>
-
-<?php foreach ($this->order as $key): ?>
-
-    <td>
-        <?=$item->$key?>
-    </td>
-
-<?php endforeach; ?>
-
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
+    </tbody>
 </table>

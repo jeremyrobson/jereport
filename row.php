@@ -1,13 +1,13 @@
-<tr data-row-id="<?=$id?>" data-parent-id="<?=$parent_id?>" class="node expanded">
+<tr data-row-id="<?=$id?>" data-parent-id="<?=$parent_id?>" class="jr-row jr-expanded">
 
     <?php for ($i=0; $i<$level; $i++): ?>
         <td></td>
     <?php endfor; ?>
 
     <td>
-        <?=$group?>
+        <?=$text?>
         <?php if (count($node["children"])): ?>
-            <a class="toggle-button" href="javascript:void(0);">+</a>
+            <a class="jr-toggle" href="javascript:void(0);">+</a>
         <?php endif; ?>
     </td>
 
